@@ -18,7 +18,12 @@ export const Route = createFileRoute('/')({
 });
 
 function HomePage() {
-  const { data: ideas } = useSuspenseQuery(LatestIdeasQueryOptions(3));
+  const { data } = useSuspenseQuery(LatestIdeasQueryOptions(3));
+
+  const ideas = [...data].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
   return (
     <>
       <div className='flex flex-col md:flex-row items-start justify-between gap-10 p-6 text-blue-600'>
