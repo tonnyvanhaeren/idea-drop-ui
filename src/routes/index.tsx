@@ -6,7 +6,7 @@ import IdeaCard from '@/components/IdeaCard';
 
 const LatestIdeasQueryOptions = (limit: number) =>
   queryOptions({
-    queryKey: ['latest_ideas', limit],
+    queryKey: ['latest_ideas', { limit: 3 }],
     queryFn: () => fetchAllIdeas(limit),
   });
 
@@ -18,11 +18,11 @@ export const Route = createFileRoute('/')({
 });
 
 function HomePage() {
-  const { data } = useSuspenseQuery(LatestIdeasQueryOptions(3));
+  const { data: ideas } = useSuspenseQuery(LatestIdeasQueryOptions(3));
 
-  const ideas = [...data].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  // const ideas = [...data].sort(
+  //   (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  // );
 
   return (
     <>
@@ -44,7 +44,7 @@ function HomePage() {
           </h2>
           <div className='space-y-6'>
             {ideas.map((idea) => (
-              <IdeaCard key={idea.id} idea={idea} button={false} />
+              <IdeaCard key={idea._id} idea={idea} button={false} />
             ))}
           </div>
 
